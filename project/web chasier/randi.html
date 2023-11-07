@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cashier Website</title>
+  <link href="style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Cashier Website</h1>
+    <h2>Tambah Item</h2>
+    <div class="item-input">
+      <input type="text" id="item-name" placeholder="Item Name">
+      <input type="number" id="item-price" placeholder="Item Price">
+      <button onclick="addItem()">Tambah Item</button>
+    </div>
+    <ul class="cart-items" id="cart-items"></ul>
+    <div class="total">
+      <strong>Total: Rp.</strong><span id="total-amount">0.00</span>
+    </div>
+    <button onclick="processPayment()">Proses Pembayaran</button>
+  </div>
+
+  <script>
+    let cartItems = [];
+    let totalAmount = 0;
+
+    function addItem() {
+      const itemName = document.getElementById('item-name').value;
+      const itemPrice = parseFloat(document.getElementById('item-price').value);
+      
+      if (itemName && itemPrice) {
+        cartItems.push({ name: itemName, price: itemPrice });
+        displayCartItems();
+        updateTotalAmount();
+        clearInputFields();
+      }
+    }
+
+    function displayCartItems() {
+      const cartItemsElement = document.getElementById('cart-items');
+      cartItemsElement.innerHTML = '';
+      
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        const listItem = document.createElement('li');
+        listItem.innerText = item.name + ': Rp.' + item.price.toFixed(2);
+        cartItemsElement.appendChild(listItem);
+      }
+    }
+
+    function updateTotalAmount() {
+      totalAmount = 0;
+      
+      for (let i = 0; i < cartItems.length; i++) {
+        totalAmount += cartItems[i].price;
+      }
+      
+      const totalAmountElement = document.getElementById('total-amount');
+      totalAmountElement.innerText = totalAmount.toFixed(2);
+    }
+
+    function clearInputFields() {
+      document.getElementById('item-name').value = '';
+      document.getElementById('item-price').value = '';
+    }
+
+    function processPayment() {
+      if (totalAmount > 0) {
+        alert('Pembayaran Berhasil!\nTotal Dibayar: Rp.' + totalAmount.toFixed(2));
+        
+        // Clear the cart
+        cartItems = [];
+        displayCartItems();
+        updateTotalAmount();
+      } else {
+        alert('No items in the cart!');
+      }
+    }
+  </script>
+</body>
+</html>
